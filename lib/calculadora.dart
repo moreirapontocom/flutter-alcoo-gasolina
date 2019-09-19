@@ -10,6 +10,52 @@ class _CalculadoraState extends State<Calculadora> {
   TextEditingController _controllerAlcool = TextEditingController();
   TextEditingController _controllerGasolina = TextEditingController();
 
+  String _resultado = "";
+  String _resultadoTipo = "";
+
+  void _calcular() {
+    print("Clicou no botão");
+    print("Preço álcool: " + _controllerAlcool.text);
+    print("Preço gasolina: " + _controllerGasolina.text);
+
+    double precoAlcool = double.tryParse( _controllerAlcool.text );
+    double precoGasolina = double.tryParse( _controllerGasolina.text );
+
+    if (precoAlcool==null || precoGasolina==null) {
+      // Números inválidos
+      setState(() {
+        this._resultado = "Números inválidos";
+        this._resultadoTipo = "";
+      });
+    } else {
+      // Números corretos
+
+      if (precoAlcool / precoGasolina >= 0.7) {
+        setState(() {
+          this._resultado = "Melhor abastecer com";
+          this._resultadoTipo = "GASOLINA";
+        });
+      } else {
+        setState(() {
+          this._resultado = "Melhor abastecer com";
+          this._resultadoTipo = "ÁLCOOL";
+        });
+      }
+
+      FocusScope.of(context).requestFocus(new FocusNode());
+
+      // _limparCampos();
+
+    }
+  }
+
+  /*
+  _limparCampos() {
+    _controllerAlcool.text = "";
+    _controllerGasolina.text = "";
+  }
+  */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +102,7 @@ class _CalculadoraState extends State<Calculadora> {
                   "Calcular",
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
-                onPressed: () {
-                  print("Clicou no botão");
-                  print("Preço álcool: " + _controllerAlcool.text);
-                  print("Preço gasolina: " + _controllerGasolina.text);
-                },
+                onPressed: _calcular,
               ),
               Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -68,11 +110,11 @@ class _CalculadoraState extends State<Calculadora> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Text(
-                      "Melhor abastecer com",
+                      this._resultado,
                       style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
                     ),
                     Text(
-                      "TIPO",
+                      this._resultadoTipo,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
                     )
                   ],
