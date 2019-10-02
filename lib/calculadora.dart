@@ -42,6 +42,7 @@ class _CalculadoraState extends State<Calculadora> {
         });
       }
 
+      // Dismiss keyboard
       FocusScope.of(context).requestFocus(new FocusNode());
 
       // _limparCampos();
